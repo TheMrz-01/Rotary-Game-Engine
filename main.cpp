@@ -27,9 +27,19 @@ int main(void)
 
     GLfloat vertices[] =
     {
-        -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-        0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,
-        0.0f,  0.5f * float(sqrt(3)) * 2 / 3, 0.0f
+        -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,//Lower left
+        0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,//Lover right 
+        0.0f,  0.5f * float(sqrt(3)) * 2 / 3, 0.0f,//Upper
+        -0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,//Inner Left
+        0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,//Inner Right
+        0.0f, 0.5f * float(sqrt(3)) / 3, 0.0f //Inner Down
+    };
+
+    GLuint indices[] =
+    {
+        0,3,5, //Lower Left Triangle
+        3,2,4, //Lower Right Triangle
+        5,4,1 //Upper Triangle
     };
 
     GLFWwindow* window = glfwCreateWindow(800, 800, "Enigma Engine", NULL, NULL);
@@ -61,13 +71,16 @@ int main(void)
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    GLuint VAO,VBO;
+    GLuint VAO,VBO,EBO;
     glGenVertexArrays(1,&VAO);
     glGenBuffers(1,&VBO);
+    glGenBuffers(1, &EBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
     glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
 
