@@ -25,22 +25,18 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-    GLfloat vertices[] =
-    {
-        -0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,//Lower left
-        0.5f, -0.5f * float(sqrt(3)) / 3, 0.0f,//Lover right 
-        0.0f,  0.5f * float(sqrt(3)) * 2 / 3, 0.0f,//Upper
-        -0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,//Inner Left
-        0.5f / 2, 0.5f * float(sqrt(3)) / 6, 0.0f,//Inner Right
-        0.0f, 0.5f * float(sqrt(3)) / 3, 0.0f //Inner Down
+    GLfloat vertices[] = {
+     0.5f,  0.5f, 0.0f,  
+     0.5f, -0.5f, 0.0f,  
+    -0.5f, -0.5f, 0.0f,  
+    -0.5f,  0.5f, 0.0f    
     };
 
-    GLuint indices[] =
-    {
-        0,3,5, //Lower Left Triangle
-        3,2,4, //Lower Right Triangle
-        5,4,1 //Upper Triangle
+    GLuint indices[] = {  
+        0, 1, 3,   
+        1, 2, 3    
     };
+
 
     GLFWwindow* window = glfwCreateWindow(800, 800, "Enigma Engine", NULL, NULL);
 
@@ -77,8 +73,10 @@ int main(void)
     glGenBuffers(1, &EBO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
@@ -94,13 +92,16 @@ int main(void)
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     while(!glfwWindowShouldClose(window))
     {
         glClearColor(0.26f, 0.26f, 0.26f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
 
         glfwPollEvents();
