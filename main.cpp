@@ -61,6 +61,8 @@ int main(void)
     VBO1.Unbind();
     EBO1.Unbind();
 
+    GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -69,6 +71,7 @@ int main(void)
         glClearColor(0.26f, 0.26f, 0.26f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         shaderProgram.Activate();
+        glUniform1f(uniID, 0.5f);
         VAO1.Bind();
         glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
